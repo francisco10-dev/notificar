@@ -2,31 +2,36 @@ name: Notifier
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
 
   messageWhatsApp:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
+
+      - name: Install Twilio CLI
+        run: |
+          curl -fsSL https://twilio.com/cli/install | sh
+          export PATH=$HOME/.twilio-cli/bin:$PATH
 
       - name: Notification WhatsApp
         id: whatsapp-notify
         env:
           account_sid: ${{ secrets.twilio_account_sid }}
           auth_token: ${{ secrets.twilio_auth_token }}
-          message: "Se ha realizado un nuevo push en el repositorio X"
         run: |
           twilio api:core:messages:create \
             --from="whatsapp:${{ secrets.twilio_from_whatsapp_no }}" \
             --to="whatsapp:+50664694072" \
-            --message-body="${{ env.message }}"
+            --message-body="Se ha realizado un nuevo push en el repositorio X"
           twilio api:core:messages:create \
             --from="whatsapp:${{ secrets.twilio_from_whatsapp_no }}" \
             --to="whatsapp:+50684297456" \
-            --message-body="${{ env.message }}"
+            --message-body="Se ha realizado un nuevo push en el repositorio X"
+
 
 
