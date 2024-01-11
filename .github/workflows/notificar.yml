@@ -19,5 +19,5 @@ jobs:
           auth_token: ${{ secrets.twilio_auth_token }}
           to_whatsapp_no: ${{ secrets.twilio_to_whatsapp_no }}
           message: "Se ha realizado un nuevo push en el repositorio X"
-        uses: francisco10-dev/notificar@master
+        uses: twilio-labs/actions-sms@v2
 
