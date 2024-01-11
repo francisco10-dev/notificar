@@ -1,31 +1,25 @@
 name: Notifier
+
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+
 jobs:
+
   messageWhatsApp:
     runs-on: ubuntu-latest
     steps:
-      - uses: khaled-ibtikar/whatsapp-push-notify-action@master
-
+      - uses: actions/checkout@master
       - name: Notification WhatsApp
         id: whatsapp-notify
         env:
           account_sid: ${{ secrets.twilio_account_sid }}
           auth_token: ${{ secrets.twilio_auth_token }}
-          to_whatsapp_nos: ${{ secrets.twilio_to_whatsapp_nos }}  # Multiple numbers separated by comma
-          message: "Se ha realizado un nuevo push en el repositorio X"
-        run: |
-          IFS=',' read -ra numbers <<< "$TO_WHATSAPP_NOS"
-          for number in "${numbers[@]}"; do
-            curl -X POST "https://api.twilio.com/2010-04-01/Accounts/${account_sid}/Messages.json" \
-            data-urlencode "To=whatsapp:${number}" \
-            data-urlencode "From=whatsapp:${from_whatsapp_number}" \
-            data-urlencode "Body=${message}" \
-            -u "${account_sid}:${auth_token}"
-          done
+          to_whatsapp_no: ${{ secrets.twilio_to_whatsapp_no }}
+          message: "CI 👉🏻 Your message here"
+        uses: khaled-ibtikar/whatsapp-push-notify-action@master
 
 
 
